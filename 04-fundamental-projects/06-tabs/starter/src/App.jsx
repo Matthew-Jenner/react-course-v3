@@ -1,18 +1,29 @@
 import { useState, useEffect } from "react";
 import JobInfo from './JobInfo'
-const url = "https://course-api.com/react-tabs-project";
+import BtnContainer from "./BtnContainer";
+const url = "/api/react-tabs-project"; // Use '/api' instead of full URL
+
 
 const App = () => {
 	const [isLoading, setIsLoading] = useState(true);
 	const [jobs, setJobs] = useState([]);
+  const [currentItem, setCurrentItem] = useState(0)
 	//  currentItem
 
 	const fetchJobs = async() => {
-    const response = await fetch(url)
+    try {
+      const response = await fetch(url)
+      if (!response.ok) {
+        throw new Error(`HTTP error! Status: 
+        ${response.status}`);
+      }
     const newJobs = await response.json()
+    console.log(newJobs);
     setJobs(newJobs)
     setIsLoading(false)
-  }
+  } catch (error) {
+    console.error('Error fetching jobs', error);
+  }}
 
 	useEffect(() => {
     fetchJobs()
@@ -27,8 +38,9 @@ const App = () => {
   return (
     <section className="jobs-center">
       {/* {button container} */}
+      <BtnContainer jobs={jobs} />
       {/* {job info} */}
-      <JobInfo/>
+      <JobInfo jobs={jobs}currentItem={currentItem}/>
     </section>
   )
 };
