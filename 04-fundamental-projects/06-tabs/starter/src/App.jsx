@@ -23,6 +23,7 @@ const App = () => {
     setIsLoading(false)
   } catch (error) {
     console.error('Error fetching jobs', error);
+    setIsLoading(false)
   }}
 
 	useEffect(() => {
@@ -38,7 +39,9 @@ const App = () => {
   return (
     <section className="jobs-center">
       {/* {button container} */}
-      <BtnContainer jobs={jobs} />
+      <BtnContainer jobs={jobs}
+      currentItem={currentItem}
+      setCurrentItem={setCurrentItem} />
       {/* {job info} */}
       <JobInfo jobs={jobs}currentItem={currentItem}/>
     </section>
